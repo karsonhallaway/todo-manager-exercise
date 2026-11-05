@@ -7,50 +7,48 @@ print(HEADER)
 # === Variables === 
 todos = ["clean", "read", "cook"]
 
-    
-# === User Inputs === 
-def display_menu(): 
-    
-    # === Display Todos ===
+# === Display Todos ===
+def show_list():
     for i, todo in enumerate(todos):
-        print(f"{i + 1}: {todo}") 
+        print(f"{i + 1}. {todo}")
+    print(f"\nTotal tasks: {len(todos)}") 
     
-    # === Total numbers of Todos ==== 
-    print(f"\nTotal tasks: {len(todos)}")
-        
-    # === Main Menu === 
-    print("-" * WIDTH)
-    print("\nWhat would you like to do? ") 
-    print("1. Add a task")
-    print("2. Remove a task") 
-    print("3. Exit") 
-        
     
+# === Display Menu === 
 def main():
+    
     while True:
-        display_menu()
+        show_list()
         
-        choice = input("\nEnter options 1 - 3: ").strip()
+        print("\nWhat would you like to do?")
+        print("1. Add a task")
+        print("2. Remove a task")
+        print("3. Exit")
+        choice = input("\nSelect: ").strip() 
+        
+        if choice == "3":
+            print("Quitting the program. Goodby!")
+            break
+        elif choice not in ("1", "2"):
+            print("Please choose a valid menu option.")
+            continue 
         
         try: 
-            match choice:
-                case "1":
-                    new_todo = input("Enter task name: ")
-                    todos.append(new_todo)
-                    print(f"Your todo list has been updated")
-                case "2":
-                    delete_todo = int(input("Delete task number: "))
-                    todos.pop(delete_todo - 1)
-                case "3":
-                    print("Exiting program now. Goodbye!")
-                    break
-                case _:
-                    print(f"{choice!r} is not a valid option. Try again.")
+            if choice == "1":
+                todos.append(input("Enter new task name "))
+            elif choice == "2":
+                task_number = int(input("Enter task number: "))
+                if not 1 <= task_number <= len(todos): 
+                    raise IndexError
+                todos.pop(task_number -1) 
         except ValueError:
-            print("Please enter a valid task number.")
+            print("Please choose a valid task number.")
         except IndexError:
-            print("That task number does not exist.") 
-            
+            print("That task number does not exist.")
+        else:
+            print("\nUpdated List:")
+            show_list()
+                     
                          
 if __name__ == "__main__":
     main() 
